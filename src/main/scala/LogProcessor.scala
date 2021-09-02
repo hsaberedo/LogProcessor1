@@ -125,6 +125,14 @@ def ReportTrigger(args: Array[String], sparkSession: SparkSession): Unit = {
       baseReportExtractor[DateConCount](dataset, "date", "dates", "requestCount", outputPath)
     }
 
+    def retrieveUrisReport(dataset: Dataset[UriCount], outputPath: String): Unit = {
+      baseReportExtractor[UriCount](dataset, "request", "requests", "requestCount", outputPath)
+    }
+
+    def retrieveIpReport(dataset: Dataset[IpAddressCount], outputPath: String): Unit = {
+      baseReportExtractor[IpAddressCount](dataset, "ip", "ips", "ipCount", outputPath)
+    }
+
     def baseReportExtractor[T](dataset: Dataset[T], colName: String, alias: String, updatedColName: String, outputPath: String): Unit = {
       //CustomFileUtils.deleteIfExists(Paths.get(outputPath))
       dataset.groupBy("date").agg(collect_list(col(colName))
